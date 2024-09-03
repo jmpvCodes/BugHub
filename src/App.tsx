@@ -11,6 +11,9 @@ import BugsPage from "./pages/BugsPage";
 import AnalysisPage from "./pages/AnalysisPage";
 import TeamPage from "./pages/TeamPage";
 import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
+import CreateMultipleBugsPage from "./pages/CreateMultipleBugsPage";
+import ProjectsPage from "./pages/ProjectsPage";
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -27,8 +30,8 @@ const App: React.FC = () => {
   };
   return (
     <Router>
-      <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
-        <div className="bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
+      <div className={`flex flex-col min-h-screen ${isDarkMode ? "dark" : ""}`}>
+        <div className="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
           <Routes>
             <Route
               path="/"
@@ -52,9 +55,12 @@ const App: React.FC = () => {
             <Route path="analysis" element={<AnalysisPage />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/multiple-bugs" element={<CreateMultipleBugsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
           </Routes>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </Router>
   );

@@ -53,10 +53,14 @@ const AnalysisPage: React.FC = () => {
           Estadísticas Generales
         </h2>
         <ul className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-4">
-          <li>Tiempo promedio de resolución: 2.5 días</li>
-          <li>Bugs resueltos esta semana: 15</li>
-          <li>Bugs nuevos esta semana: 8</li>
-          <li>Desarrollador más activo: Usuario2 (23 bugs resueltos)</li>
+          <li className="text-white">
+            Tiempo promedio de resolución: 2.5 días
+          </li>
+          <li className="text-white">Bugs resueltos esta semana: 15</li>
+          <li className="text-white">Bugs nuevos esta semana: 8</li>
+          <li className="text-white">
+            Desarrollador más activo: Usuario2 (23 bugs resueltos)
+          </li>
         </ul>
       </div>
     </div>

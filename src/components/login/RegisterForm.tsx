@@ -1,15 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { data, error, loading, fetchData } = useFetch<{ message: string }>(
+    "http://localhost:5000/api/auth/register",
+    {
+      method: "POST",
+    }
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Registrar usuario:", { name, email, password });
+    await fetchData({ username: name, email, password });
   };
+
+  // Puedes usar 'data', 'error', y 'loading' para mostrar diferentes estados en tu UI
+  if (loading) return <p>Registrando...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  if (data) return <p>{data.message}</p>;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -72,8 +84,8 @@ const RegisterForm: React.FC = () => {
           Registrarse
         </button>
       </div>
-      <div className="text-sm text-center">
-        ¿Ya tienes una cuenta?{" "}
+      <div className="text-sm text-center flex space-x-3 w-full">
+        <p className="text-white">¿Ya tienes una cuenta?</p>
         <Link
           to="/login"
           className="font-medium text-[#005a87] hover:text-[#004a70] dark:text-[#ccffff] dark:hover:text-white"

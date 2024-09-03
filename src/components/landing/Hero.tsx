@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
+import animationData from "../../assets/animations/landing.json";
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
@@ -38,23 +40,12 @@ const Hero: React.FC = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
             <div className="w-full max-w-md h-64 md:h-80 bg-gray-200 rounded-lg overflow-hidden">
-              {/* Aquí puedes colocar tu video o gif */}
-              <img
-                src="/path-to-your-gif-or-video-placeholder.gif"
-                alt="BugHub Demo"
-                className="w-full h-full object-cover"
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                className="w-full h-full"
+                style={{ background: "transparent" }}
               />
-              {/* Si prefieres un video, puedes usar la etiqueta video así:
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                className="w-full h-full object-cover"
-              >
-                <source src="/path-to-your-video.mp4" type="video/mp4" />
-                Tu navegador no soporta el tag de video.
-              </video>
-              */}
             </div>
           </div>
         </div>

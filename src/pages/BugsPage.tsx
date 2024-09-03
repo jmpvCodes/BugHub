@@ -1,92 +1,130 @@
-import React from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import Header from "../components/Header";
-import { useState } from "react";
+// src/pages/BugsPage.tsx
 
-const bugData = [
-  {
-    id: 1,
-    title: "Error en el login",
-    status: "Abierto",
-    priority: "Alta",
-    assignedTo: "Usuario1",
-  },
-  {
-    id: 2,
-    title: "Problema de renderizado en IE11",
-    status: "En Progreso",
-    priority: "Media",
-    assignedTo: "Usuario2",
-  },
-  {
-    id: 3,
-    title: "Crash en la página de perfil",
-    status: "Resuelto",
-    priority: "Baja",
-    assignedTo: "Usuario3",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FaBug, FaPlus } from "react-icons/fa";
+import Header from "../components/Header";
+import BugModal from "../components/bugs/BugModal";
+import BugList from "../components/bugs/BugList";
+
+interface Bug {
+  id: number;
+  title: string;
+  description: string;
+  severity: string;
+  priority: string;
+  category: string;
+  assignedTo: string;
+  dateFound: string;
+  expectedFixDate: string;
+  steps: string;
+  status: string;
+  attachments: string[]; // URLs de los archivos adjuntos
+}
 
 const BugsPage: React.FC = () => {
-  const [language, setLanguage] = useState<"es" | "en">("es");
+  const [bugs, setBugs] = useState<Bug[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const toogleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  const [language, setLanguage] = useState<"es" | "en">("es");
+
+  useEffect(() => {
+    // Aquí cargarías los bugs desde tu API
+    // Por ahora, usaremos datos de ejemplo más detallados
+    setBugs([
+      {
+        id: 1,
+        title: "Error en login",
+        description:
+          "Los usuarios no pueden iniciar sesión después de actualizar sus contraseñas",
+        severity: "Alta",
+        priority: "Urgente",
+        category: "Autenticación",
+        assignedTo: "Juan Pérez",
+        dateFound: "2023-05-15",
+        expectedFixDate: "2023-05-20",
+        steps:
+          "1. Actualizar contraseña\n2. Intentar iniciar sesión\n3. Recibir error 403",
+        status: "Abierto",
+        attachments: ["error_screenshot.png"],
+      },
+      {
+        id: 2,
+        title: "Problema de renderizado en Safari",
+        description:
+          "Las imágenes no se cargan correctamente en Safari en dispositivos iOS",
+        severity: "Media",
+        priority: "Media",
+        category: "Frontend",
+        assignedTo: "Ana García",
+        dateFound: "2023-05-10",
+        expectedFixDate: "2023-05-25",
+        steps:
+          "1. Abrir la página de galería en Safari iOS\n2. Observar que las imágenes no se cargan",
+        status: "En progreso",
+        attachments: [],
+      },
+    ]);
+  }, []);
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  const handleAddBug = (newBugData: FormData) => {
+    // Aquí procesarías el FormData y lo enviarías a tu API
+    // Por ahora, simularemos la creación de un nuevo bug
+    const newBug: Bug = {
+      id: bugs.length + 1,
+      title: newBugData.get("title") as string,
+      description: newBugData.get("description") as string,
+      severity: newBugData.get("severity") as string,
+      priority: newBugData.get("priority") as string,
+      category: newBugData.get("category") as string,
+      assignedTo: newBugData.get("assignedTo") as string,
+      dateFound: newBugData.get("dateFound") as string,
+      expectedFixDate: newBugData.get("expectedFixDate") as string,
+      steps: newBugData.get("steps") as string,
+      status: "Abierto",
+      attachments: [], // Aquí procesarías los archivos adjuntos y guardarías sus URLs
+    };
+
+    setBugs([...bugs, newBug]);
+    setIsModalOpen(false);
   };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Header
         isDarkMode={isDarkMode}
-        toggleTheme={toogleTheme}
+        toggleTheme={toggleTheme}
         language={language}
         isLoggedIn={true}
       />
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-        Gestión de Bugs
-      </h1>
-      <div className="mb-4 flex justify-between items-center">
-        <input
-          type="text"
-          placeholder="Buscar bugs..."
-          className="p-2 border rounded-md w-64 dark:bg-gray-700 dark:text-white"
+      <div className="justify-between items-center mb-6 mt-16">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+          Bugs
+        </h1>
+        <div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mr-2"
+          >
+            <FaPlus className="inline mr-2" /> Nuevo Bug
+          </button>
+          <Link
+            to="/multiple-bugs"
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md"
+          >
+            <FaBug className="inline mr-2" /> Crear Múltiples Bugs
+          </Link>
+        </div>
+      </div>
+      <BugList bugs={bugs} />
+      {isModalOpen && (
+        <BugModal
+          onClose={() => setIsModalOpen(false)}
+          onAddBug={handleAddBug}
         />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-          Nuevo Bug
-        </button>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
-          <thead className="bg-gray-100 dark:bg-gray-700">
-            <tr>
-              <th className="px-4 py-2 text-left text-white">ID</th>
-              <th className="px-4 py-2 text-left text-white">Título</th>
-              <th className="px-4 py-2 text-left text-white">Estado</th>
-              <th className="px-4 py-2 text-left text-white">Prioridad</th>
-              <th className="px-4 py-2 text-left text-white">Asignado a</th>
-              <th className="px-4 py-2 text-left text-white">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bugData.map((bug) => (
-              <tr key={bug.id} className="border-b dark:border-gray-700">
-                <td className="px-4 py-2 text-white">{bug.id}</td>
-                <td className="px-4 py-2 text-white">{bug.title}</td>
-                <td className="px-4 py-2 text-white">{bug.status}</td>
-                <td className="px-4 py-2 text-white">{bug.priority}</td>
-                <td className="px-4 py-2 text-white">{bug.assignedTo}</td>
-                <td className="px-4 py-2">
-                  <button className="text-blue-500 hover:text-blue-700 mr-2">
-                    <FaEdit />
-                  </button>
-                  <button className="text-red-500 hover:text-red-700">
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      )}
     </div>
   );
 };

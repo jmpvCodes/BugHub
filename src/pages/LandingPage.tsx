@@ -5,7 +5,7 @@ import Features from "../components/landing/Features";
 import WhyBugHub from "../components/landing/WhyBugHub";
 import FeaturesShowcase from "../components/landing/FeaturesShowcase";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface LandingPageProps {
   isDarkMode: boolean;

@@ -1,18 +1,31 @@
 import React, { useState } from "react";
 import { FaGithub, FaGoogle, FaFacebook, FaTwitter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const { data, error, loading, fetchData } = useFetch<{ token: string }>(
+    "http://localhost:5000/api/auth/login",
+    {
+      method: "POST",
+    }
+  );
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login with:", email, password);
-    // Aquí iría la lógica de autenticación real
-    // Por ahora, simplemente establecemos isLoggedIn a true
-    navigate("/summary");
+    await fetchData({ email, password });
+
+    if (data) {
+      console.log(data);
+      // Guardar el token en el almacenamiento local
+      localStorage.setItem("token", data.token);
+      // Navegar a la página de resumen
+      navigate("/summary");
+    }
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -91,7 +104,7 @@ const LoginScreen: React.FC = () => {
             <div className="text-sm">
               <a
                 href="#"
-                className="font-medium text-[#005a87] hover:text-[#003957]"
+                className="font-medium text-[#1badf6] hover:text-[#a5cfe5]"
                 onClick={handleForgotPasswordClick}
               >
                 ¿Olvidaste tu contraseña?
@@ -107,8 +120,9 @@ const LoginScreen: React.FC = () => {
               Iniciar sesión
             </button>
           </div>
+          {loading && <p className="text-white">Verificando...</p>}
+          {error && <p className="text-red-500">{error.message}</p>}
         </form>
-
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -166,7 +180,7 @@ const LoginScreen: React.FC = () => {
             ¿No tienes una cuenta?{" "}
             <a
               href="#"
-              className="font-medium text-[#005a87] hover:text-[#003957]"
+              className="font-medium text-[#1badf6] hover:text-[#a5cfe5]"
               onClick={handleRegisterClick}
             >
               Regístrate ahora
