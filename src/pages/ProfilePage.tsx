@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaSave, FaSignOutAlt } from "react-icons/fa";
-import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import useNotify from "../hooks/useNotify";
 
-const ProfilePage: React.FC = () => {
+interface ProfilePageProps {
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+}
+
+const ProfilePage: React.FC<ProfilePageProps> = ({ setIsLoggedIn }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
-  const [language, setLanguage] = useState<"es" | "en">("es");
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const notify = useNotify();
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,20 +27,14 @@ const ProfilePage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    // Eliminar el token del almacenamiento local
     localStorage.removeItem("token");
-    // Redirigir al usuario a la página de inicio o login
+    setIsLoggedIn(false);
     navigate("/");
+    notify.success("Sesión cerrada correctamente");
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Perfil de Usuario
       </h1>

@@ -6,7 +6,6 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
-import Header from "../components/Header";
 
 interface Bug {
   id: number;
@@ -159,19 +158,9 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
 
 const ProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [language, setLanguage] = useState<"es" | "en">("es");
-
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Proyectos Activos
       </h1>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaBell, FaPalette, FaLock, FaUser, FaSave } from "react-icons/fa";
-import Header from "../components/Header";
 const SettingsPage: React.FC = () => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
@@ -8,11 +7,6 @@ const SettingsPage: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [language, setLanguage] = useState<"es" | "en">("es");
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toogleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,12 +22,6 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toogleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Configuración
       </h1>

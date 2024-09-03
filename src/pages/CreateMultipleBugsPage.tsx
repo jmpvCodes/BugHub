@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import Header from "../components/Header";
 
 interface Bug {
   title: string;
@@ -31,12 +30,7 @@ const CreateMultipleBugsPage: React.FC = () => {
       steps: "",
     },
   ]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [language, setLanguage] = useState<"es" | "en">("es");
   const navigate = useNavigate();
-
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
   const handleAddBug = () => {
     setBugs([
       ...bugs,
@@ -75,12 +69,6 @@ const CreateMultipleBugsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
         Crear Múltiples Bugs
       </h1>

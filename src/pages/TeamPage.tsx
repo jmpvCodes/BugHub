@@ -7,7 +7,6 @@ import {
   FaTrash,
   FaClock,
 } from "react-icons/fa";
-import Header from "../components/Header";
 
 interface TeamMember {
   id: number;
@@ -128,12 +127,6 @@ const TeamMemberCard: React.FC<{
 const TeamPage: React.FC = () => {
   const [teamMembers, setTeamMembers] =
     useState<TeamMember[]>(initialTeamMembers);
-  const [language, setLanguage] = useState<"es" | "en">("es");
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const handleEditMember = (id: number) => {
     console.log("Editar miembro con ID:", id);
@@ -150,12 +143,6 @@ const TeamPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Equipo de Desarrollo
       </h1>

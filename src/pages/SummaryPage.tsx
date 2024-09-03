@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FaBug,
   FaCheckCircle,
@@ -9,9 +9,7 @@ import {
   FaArrowDown,
   FaFire,
   FaTrophy,
-  FaChartLine,
 } from "react-icons/fa";
-import Header from "../components/Header";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import {
   BarChart,
@@ -75,13 +73,6 @@ const ProjectProgressCard: React.FC<{
 );
 
 const SummaryPage: React.FC = () => {
-  const [language, setLanguage] = useState<"es" | "en">("es");
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   const bugTrendData = [
     { name: "Lun", bugs: 12 },
     { name: "Mar", bugs: 19 },
@@ -94,12 +85,6 @@ const SummaryPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Panel de Control
       </h1>

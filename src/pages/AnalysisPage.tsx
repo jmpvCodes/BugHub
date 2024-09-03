@@ -1,7 +1,5 @@
 import React from "react";
 import { FaChartBar, FaChartPie, FaChartLine } from "react-icons/fa";
-import Header from "../components/Header";
-import { useState } from "react";
 
 const AnalysisCard: React.FC<{ title: string; icon: React.ReactNode }> = ({
   title,
@@ -20,20 +18,14 @@ const AnalysisCard: React.FC<{ title: string; icon: React.ReactNode }> = ({
   </div>
 );
 
-const AnalysisPage: React.FC = () => {
-  const [language, setLanguage] = useState<"es" | "en">("es");
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toogleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+interface AnalysisPageProps {
+  isDarkMode: boolean;
+  toogleTheme: () => void;
+}
+
+const AnalysisPage: React.FC<AnalysisPageProps> = () => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toogleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         Análisis de Bugs
       </h1>

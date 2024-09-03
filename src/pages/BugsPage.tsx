@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBug, FaPlus } from "react-icons/fa";
-import Header from "../components/Header";
 import BugModal from "../components/bugs/BugModal";
 import BugList from "../components/bugs/BugList";
 
@@ -25,8 +24,6 @@ interface Bug {
 const BugsPage: React.FC = () => {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [language, setLanguage] = useState<"es" | "en">("es");
 
   useEffect(() => {
     // Aquí cargarías los bugs desde tu API
@@ -67,8 +64,6 @@ const BugsPage: React.FC = () => {
     ]);
   }, []);
 
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
   const handleAddBug = (newBugData: FormData) => {
     // Aquí procesarías el FormData y lo enviarías a tu API
     // Por ahora, simularemos la creación de un nuevo bug
@@ -93,12 +88,6 @@ const BugsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        language={language}
-        isLoggedIn={true}
-      />
       <div className="justify-between items-center mb-6 mt-16">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
           Bugs

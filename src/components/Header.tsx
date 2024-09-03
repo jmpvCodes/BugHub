@@ -3,21 +3,28 @@ import { Link, useLocation } from "react-router-dom";
 import {
   MoonIcon,
   SunIcon,
-  LanguageIcon,
   UserIcon,
   UserCircleIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import BugIcon from "./landing/BugIcon";
 import { CiSettings } from "react-icons/ci";
+import { Menu } from "@headlessui/react";
 
 interface HeaderProps {
   isDarkMode: boolean;
   toggleTheme: () => void;
-  language?: "es" | "en";
-  setLanguage?: (lang: "es" | "en") => void;
+  language: "es" | "en";
+  setLanguage: (lang: "es" | "en") => void;
   isLoggedIn?: boolean;
 }
+
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 const Header: React.FC<HeaderProps> = ({
   isDarkMode,
@@ -30,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
   const isForgotPasswordPage = location.pathname === "/forgot-password";
+  console.log("isLoggedIn", isLoggedIn);
 
   const navItems = [
     { name: language === "es" ? "Inicio" : "Home", href: "/#home" },
@@ -94,13 +102,13 @@ const Header: React.FC<HeaderProps> = ({
             !isForgotPasswordPage && (
               <nav className="hidden md:flex space-x-4 items-center">
                 {navItems.map((item) => (
-                  <Link
+                  <button
                     key={item.name}
-                    to={item.href}
+                    onClick={() => scrollToSection(item.href.substring(2))}
                     className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     {item.name}
-                  </Link>
+                  </button>
                 ))}
                 <div className="flex items-center space-x-4">
                   <button
@@ -118,14 +126,42 @@ const Header: React.FC<HeaderProps> = ({
                       <MoonIcon className="h-6 w-6" />
                     )}
                   </button>
-                  <button
-                    onClick={() => setLanguage(language === "es" ? "en" : "es")}
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                    aria-label="Change language"
-                  >
-                    <LanguageIcon className="h-6 w-6" />
-                    <span className="ml-1">{language.toUpperCase()}</span>
-                  </button>
+                  <Menu as="div" className="relative">
+                    <Menu.Button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                      <span className="sr-only">Change language</span>
+                      <span>{language.toUpperCase()}</span>
+                    </Menu.Button>
+                    <Menu.Items className="absolute right-0 mt-2 w-28 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            onClick={() => setLanguage("es")}
+                            className={`${
+                              active
+                                ? "bg-gray-100 dark:bg-gray-600"
+                                : "text-gray-700 dark:text-gray-300"
+                            } block w-full text-left px-4 py-2 text-sm`}
+                          >
+                            Español
+                          </button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            onClick={() => setLanguage("en")}
+                            className={`${
+                              active
+                                ? "bg-gray-100 dark:bg-gray-600"
+                                : "text-gray-700 dark:text-gray-300"
+                            } block w-full text-left px-4 py-2 text-sm`}
+                          >
+                            English
+                          </button>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Menu>
                   <Link
                     to="/login"
                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center"
